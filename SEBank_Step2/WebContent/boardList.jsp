@@ -13,6 +13,9 @@
 	background-color: #e6e6ff;
 }
 </style>
+<script>
+
+</script>
 </head>
 <body>
 	<h1>BOARD</h1>
@@ -22,18 +25,15 @@
 		int mPage = 0;
 		if (maxPage != null) {
 			mPage = Integer.parseInt(maxPage);
-			System.out.println(" boardList max  :  " + mPage);
 		}
 		int pagen = 1;
 		String pageNum = (String) request.getParameter("pagen");
 		if (pageNum != null) {
 			pagen = Integer.parseInt(pageNum);
-			System.out.println(" boardList now  :  " + pagen);
 		}
 
 		ArrayList<Board> list = (ArrayList<Board>) session.getAttribute("boardList");
 	%>
-
 	<div class="whole">
 		<table border="1">
 			<tr class="heads">
@@ -91,6 +91,11 @@
 			<%
 				}
 			%>
+			<select name="count">
+				<option value="5">5개</option>
+				<option value="10">10개</option>
+				<option value="15">15개</option>
+			</select>
 		</div>
 		<a href="bs?action=writeForm">글쓰기</a>
 	</div>

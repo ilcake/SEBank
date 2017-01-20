@@ -44,16 +44,15 @@ public class BoardServlet extends HttpServlet {
 			int pagen = 1;
 			int count = 10;
 			dao = new BoardDAO();
-			int maxNum = (dao.getFullCount() / count) + 1;
+			int maxNum = ((dao.getFullCount() - 1) / count) + 1;
 			request.getSession().setAttribute("maxPage", maxNum + "");
-			try {
-				String whatNow = request.getParameter("pagen");
+
+			String whatNow = request.getParameter("pagen");
+			if (whatNow != null)
 				pagen = Integer.parseInt(whatNow);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			int start = ((pagen - 1) * 10) + 1;
-			int end = ((pagen - 1) * 10) + count;
+
+			int start = ((pagen - 1) * count) + 1;
+			int end = ((pagen - 1) * count) + count;
 			ArrayList<Board> list = dao.list(start, end);
 			session = request.getSession();
 			session.setAttribute("boardList", list);
