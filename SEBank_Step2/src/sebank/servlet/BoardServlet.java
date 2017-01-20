@@ -22,6 +22,7 @@ import sebank.vo.Reply;
 @WebServlet("/bs")
 public class BoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	// good
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
