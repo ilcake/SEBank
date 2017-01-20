@@ -234,10 +234,8 @@ public class BoardDAO {
 			ps.setString(1, text);
 			ps.setInt(2, a);
 			result = ps.executeUpdate();
-
 		} catch (Exception e) {
 			e.printStackTrace();
-			result = -1;
 		}
 		ConnectionManager.closeConnection(con);
 		return result;

@@ -1,6 +1,8 @@
 package sebank.vo;
 
-public class Board {
+import java.io.Serializable;
+
+public class Board implements Serializable {
 	private int boardnum;
 	private String id;
 	private String title;

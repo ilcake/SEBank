@@ -43,6 +43,15 @@ public class BoardServlet extends HttpServlet {
 		case "boardList":
 			int pagen = 1;
 			int count = 10;
+			String counts = request.getParameter("count");
+			if (counts != null) {
+				count = Integer.parseInt(counts);
+				request.getSession().setAttribute("count", count + "");
+			}
+			String wh = (String) request.getSession().getAttribute("count");
+			if (wh != null)
+				count = Integer.parseInt(wh);
+
 			dao = new BoardDAO();
 			int maxNum = ((dao.getFullCount() - 1) / count) + 1;
 			request.getSession().setAttribute("maxPage", maxNum + "");
@@ -150,10 +159,15 @@ public class BoardServlet extends HttpServlet {
 			break;
 		case "replyUpdate":
 			String rtext = (String) request.getParameter("text");
+			String rnums = request.getParameter("rnum");
 			b = (Board) request.getSession().getAttribute("read");
-			dao = new BoardDAO();
+			int rnum = -1;
+			if (rnums != null)
+				rnum = Integer.parseInt(rnums);
+			System.out.println(rnum);
 			System.out.println(rtext);
-			result = dao.replyUpdate(b.getBoardnum(), rtext);
+			dao = new BoardDAO();
+			result = dao.replyUpdate(rnum, rtext);
 			if (result > 0) {
 				response.sendRedirect("bs?action=read&num=" + b.getBoardnum());
 			} else {

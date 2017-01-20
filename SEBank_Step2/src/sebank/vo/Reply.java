@@ -1,6 +1,8 @@
 package sebank.vo;
 
-public class Reply {
+import java.io.Serializable;
+
+public class Reply implements Serializable {
 	private int replynum;
 	private int boardnum;
 	private String id;

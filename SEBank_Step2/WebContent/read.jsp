@@ -36,7 +36,7 @@
 	}
 	function replyUpdate(replyNum) {
 		var replyForm = document.getElementById(replyNum);
-		replyForm.innerHTML = "<form action='bs' method='post' onsubmit=''><input type='hidden' name='action' value='replyUpdate'><input type='text' name='text'><input type='submit' value='확인'></form>";
+		replyForm.innerHTML = "<form action='bs' method='post' onsubmit=''><input type='hidden' name='action' value='replyUpdate'><input type='hidden' name='rnum' value='" + replyNum + "'><input type='text' name='text'><input type='submit' value='확인'></form>";
 	}
 </script>
 </head>
