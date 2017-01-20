@@ -19,7 +19,7 @@
 
 	<%
 		String maxPage = (String) session.getAttribute("maxPage");
-		int mPage = 100;
+		int mPage = 0;
 		if (maxPage != null) {
 			mPage = Integer.parseInt(maxPage);
 			System.out.println(" boardList max  :  " + mPage);
@@ -74,7 +74,9 @@
 		</table>
 		<div class="navi">
 			<%
-				if (pagen == 1) {
+				if (pagen == 1 && mPage == 1) {
+
+				} else if (pagen == 1) {
 			%>
 			<a href="bs?action=boardList&pagen=<%=(pagen + 1)%>">다음페이지</a>
 			<%

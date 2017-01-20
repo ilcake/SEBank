@@ -43,7 +43,7 @@ public class BoardDAO {
 
 			String sql = "select * from";
 			sql += "( select rownum r, b.* from";
-			sql += "(select boardnum, id, title, content, to_char(inputdate, 'YYYY/MM/DD') inputdate, hits ";
+			sql += "(select boardnum, id, title, content, to_char(inputdate, 'YYYY/MM/DD') inputdate2, hits, inputdate ";
 			sql += "from board2 order by inputdate desc) b) where r between ? and ?";
 
 			// String sql = "select boardnum, id, title, content,
@@ -56,7 +56,7 @@ public class BoardDAO {
 
 			while (rs.next()) {
 				list.add(new Board(rs.getInt("boardnum"), rs.getString("id"), rs.getString("title"),
-						rs.getString("content"), rs.getString("inputdate"), rs.getInt("hits")));
+						rs.getString("content"), rs.getString("inputdate2"), rs.getInt("hits")));
 			}
 
 		} catch (Exception e) {
