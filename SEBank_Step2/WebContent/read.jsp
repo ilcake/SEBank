@@ -41,6 +41,7 @@
 </script>
 </head>
 <body>
+	<%@ include file="index.jsp"%>
 	<table border="1" width=700>
 		<tr class="heads">
 			<td width=30>No.<%=b.getBoardnum()%></td>
@@ -115,6 +116,5 @@
 			<td><a href="bs?action=boardList">목록보기</a></td>
 		</tr>
 	</table>
-
 </body>
 </html>

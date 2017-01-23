@@ -3,6 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%
@@ -32,6 +33,11 @@
 .heads {
 	background-color: #e6e6ff;
 }
+
+.pgNow {
+	font-size: 20px;
+	color: red;
+}
 </style>
 <script>
 	function selected() {
@@ -48,14 +54,15 @@
 </script>
 </head>
 <body>
+	<%@ include file="index.jsp"%>
 	<h1>BOARD</h1>
 
 	<div class="whole">
 		<table border="1">
 			<tr class="heads">
 				<th>No.</th>
-				<th width=100>ID</th>
 				<th width=400>Title</th>
+				<th width=100>ID</th>
 				<th>Date</th>
 				<th align="right">Hits</th>
 			</tr>
@@ -78,8 +85,8 @@
 			%>
 			<tr>
 				<td><%=num%></td>
-				<td><%=id%></td>
 				<td><a href="bs?action=read&num=<%=num%>"><%=title%></a></td>
+				<td><%=id%></td>
 				<td><%=date%></td>
 				<td align="right"><%=hits%></td>
 			</tr>
@@ -108,13 +115,23 @@
 				}
 			%>
 			<div class="navi2">
+
+				<a href="bs?action=boardList&pagen=1">첫페이지/</a>
 				<%
-					for (int i = 1; i <= mPage; i++) {
+					int max = pagen + 2 > mPage ? mPage : pagen + 2;
+					for (int i = pagen - 2 <= 0 ? 1 : pagen - 2; i <= max; i++) {
+						if (i == pagen) {
 				%>
-				<a href="bs?action=boardList&pagen=<%=i%>"><%=i%></a>
+				<span class="pgNow" id="pgNow"><%=i%></span>
+				<%
+					} else {
+				%>
+				<a href="bs?action=boardList&pagen=<%=i%>"><%=i%> </a>
 				<%
 					}
+					}
 				%>
+				<a href="bs?action=boardList&pagen=<%=mPage%>">/마지막페이지</a>
 			</div>
 
 			<div>
