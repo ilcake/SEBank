@@ -10,6 +10,11 @@
 	color: white;
 }
 </style>
+<script type="text/javascript">
+	function outform() {
+		window.open('outForm.jsp', '회원탈퇴', 'width=500,height=300');
+	}
+</script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SEBank_Step2</title>
 </head>
@@ -29,7 +34,8 @@
 			- 회원님 접속중
 		</h4>
 		<a href="cs?action=logout">로그아웃</a> / <a href="cs?action=updateForm">개인정보수정</a>
-		/ <a href="bs?action=boardList">게시판</a>
+		/ <a href="bs?action=boardList">게시판</a> / <a href=""
+			onclick="outform();">회원탈퇴</a>
 		<%
 			}
 		%>

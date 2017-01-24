@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import sebank.dao.CustomerDAO;
 import sebank.vo.Customer;
@@ -153,6 +154,28 @@ public class CustomerServlet extends HttpServlet {
 			} else {
 				out.println("<script>");
 				out.println("alert('수정 실패!');");
+				out.println("history.go(-1);");
+				out.println("</script>");
+			}
+			break;
+
+		case "regiOut":
+			id = (String) request.getSession().getAttribute("loginId");
+			if (id == null)
+				return;
+			pw = request.getParameter("password");
+			int wh = new CustomerDAO().out(id, pw);
+			if (wh > 0) {
+				request.getSession().invalidate();
+				out.println("<script>");
+				out.println("alert('회원탈퇴 성공!');");
+				out.println("opener.history.go(0);");
+				out.println("this.close();");
+				out.println("</script>");
+			} else {
+
+				out.println("<script>");
+				out.println("alert('비밀번호가 일치하지 않습니다.');");
 				out.println("history.go(-1);");
 				out.println("</script>");
 			}

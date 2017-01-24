@@ -101,4 +101,20 @@ public class CustomerDAO {
 		return result;
 	}
 
+	public int out(String id, String pw) {
+		int result = -1;
+		Connection con = ConnectionManager.makeConnection();
+		try {
+			String sql = "delete customer where custid=? and password=?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.setString(2, pw);
+			result = ps.executeUpdate();
+
+		} catch (Exception e) {
+
+		}
+		return result;
+	}
+
 }

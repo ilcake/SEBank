@@ -39,12 +39,18 @@ public class BoardDAO {
 	public ArrayList<Board> list(int a, int b) {
 		ArrayList<Board> list = new ArrayList<>();
 		Connection con = ConnectionManager.makeConnection();
+		String sql = "";
 		try {
-
-			String sql = "select * from";
-			sql += "( select rownum r, b.* from";
-			sql += "(select boardnum, id, title, content, to_char(inputdate, 'YYYY/MM/DD') inputdate2, hits, inputdate ";
-			sql += "from board2 order by inputdate desc) b) where r between ? and ?";
+			sql += "select * from ";
+			sql += "( ";
+			sql += "      select rownum r, b.* from ";
+			sql += "      (";
+			sql += "      select boardnum, id, title, content, ";
+			sql += "      to_char(inputdate, 'YYYY/MM/DD') inputdate2, hits, inputdate ";
+			sql += "      from board2 order by boardnum desc ";
+			sql += "      ) b ";
+			sql += ") ";
+			sql += "where r between ? and ?";
 
 			// String sql = "select boardnum, id, title, content,
 			// to_char(inputdate, 'YYYY/MM/DD') inputdate, hits from board2
@@ -257,6 +263,45 @@ public class BoardDAO {
 		}
 		ConnectionManager.closeConnection(con);
 		return result;
+	}
+
+	public ArrayList<Board> sList(String stype, String que) {
+		ArrayList<Board> sList = new ArrayList<>();
+		Connection con = ConnectionManager.makeConnection();
+		String sql = "select boardnum , id, title, content, to_char(inputdate, 'YYYY/MM/DD') inputdate, hits from board2 ";
+
+		switch (stype) {
+		case "title":
+			sql += "where title like ?";
+			break;
+		case "content":
+			sql += "where content like ?";
+			break;
+		case "title+content":
+			sql += "where title like ? or content like ?";
+			break;
+		case "writer":
+			sql += "where id like ?";
+			break;
+		}
+
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, "%" + que + "%");
+			if (stype.equals("title+content")) {
+				ps.setString(2, "%" + que + "%");
+			}
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				sList.add(new Board(rs.getInt("boardnum"), rs.getString("id"), rs.getString("title"),
+						rs.getString("content"), rs.getString("inputdate"), rs.getInt("hits")));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return sList;
 	}
 
 }

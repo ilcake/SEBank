@@ -95,6 +95,15 @@
 				}
 			%>
 		</table>
+		<form action="bs" method="post">
+			<input type="hidden" name="action" value="search"><select
+				name="stype">
+				<option value="title">제목</option>
+				<option value="content">내용</option>
+				<option value="title+content">제목+내용</option>
+				<option value="writer">글쓴이</option>
+			</select><input type="text" name="que"><input type="submit" value="검색">
+		</form>
 		<div class="navi">
 			<%
 				if (pagen == 1 && mPage == 1) {

@@ -164,8 +164,6 @@ public class BoardServlet extends HttpServlet {
 			int rnum = -1;
 			if (rnums != null)
 				rnum = Integer.parseInt(rnums);
-			System.out.println(rnum);
-			System.out.println(rtext);
 			dao = new BoardDAO();
 			result = dao.replyUpdate(rnum, rtext);
 			if (result > 0) {
@@ -191,6 +189,15 @@ public class BoardServlet extends HttpServlet {
 				out.println("history.go(-1);");
 				out.println("</script>");
 			}
+			break;
+
+		case "search":
+			String stype = request.getParameter("stype");
+			String que = request.getParameter("que");
+			ArrayList<Board> sList = new BoardDAO().sList(stype, que);
+			session = request.getSession();
+			session.setAttribute("boardList", sList);
+			request.getRequestDispatcher("boardList.jsp").forward(request, response);
 			break;
 		}
 	}

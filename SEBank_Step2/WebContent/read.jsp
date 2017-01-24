@@ -22,9 +22,23 @@
 	background-color: #e6e6ff;
 	padding: 5px;
 }
+
+.textarea {
+	border: none;
+	column-fill: auto;
+	width: 100%;
+	resize: none;
+}
 </style>
 
 <script>
+
+	function resize(o) {
+		o.style.height = "1px";
+		o.style.height = (25 + o.scrollHeight) + "px";
+
+	}
+
 	var text = document.getElementById('text');
 	function checkReply() {
 		if (text.value.length == 0) {
@@ -38,6 +52,17 @@
 		var replyForm = document.getElementById(replyNum);
 		replyForm.innerHTML = "<form action='bs' method='post' onsubmit=''><input type='hidden' name='action' value='replyUpdate'><input type='hidden' name='rnum' value='" + replyNum + "'><input type='text' name='text'><input type='submit' value='확인'></form>";
 	}
+
+	function boardDelete(num) {
+		if (confirm('정말 삭제 하시겠습니까?')) {
+			location.href = "bs?action=delete&num=" + num;
+		}
+	}
+	function replyDelete(num) {
+		if (confirm('정말 삭제 하시겠습니까?')) {
+			location.href = 'bs?action=replyDelete&rnum=' + num;
+		}
+	}
 </script>
 </head>
 <body>
@@ -49,7 +74,8 @@
 			<td>작성자 : <%=b.getId()%></td>
 		</tr>
 		<tr>
-			<td class="content" colspan=3><%=b.getContent()%></td>
+			<td class="content" colspan=3><textarea class="textarea"
+					readonly="readonly" id="tex" onfocus="resize(this);"><%=b.getContent()%></textarea></td>
 		</tr>
 		<%
 			if (b.getId().equals(session.getAttribute("loginId"))) {
@@ -59,8 +85,7 @@
 			<td colspan="3">
 				<button
 					onclick="location.href='bs?action=updateForm&num=<%=b.getBoardnum()%>'">수정</button>
-				<button
-					onclick="location.href='bs?action=delete&num=<%=b.getBoardnum()%>'">삭제</button>
+				<button onclick="boardDelete(<%=b.getBoardnum()%>);">삭제</button>
 			</td>
 		</tr>
 		<%
@@ -88,11 +113,9 @@
 					if (id.equals(session.getAttribute("loginId"))) {
 				%>
 				<button onclick="replyUpdate('<%=replynum%>');">수정</button>
-				<button
-					onclick="location.href='bs?action=replyDelete&rnum=<%=replynum%>'">삭제</button>
-				<%
-					}
-				%>
+				<button onclick="replyDelete(<%=replynum%>);">삭제</button> <%
+ 	}
+ %>
 			</td>
 		</tr>
 		<%
@@ -101,7 +124,9 @@
 		%>
 
 	</table>
-
+	<script>
+		resize(document.getElementById("tex"));
+	</script>
 	<div id="replyForm">
 		<form id="reForm" action="bs" method="post"
 			onSubmit="return checkReply();">
