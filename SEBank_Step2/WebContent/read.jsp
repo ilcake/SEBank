@@ -29,6 +29,41 @@
 	width: 100%;
 	resize: none;
 }
+
+.table6_1 table {
+	width: 100%;
+	margin: 15px 0;
+	border: 0;
+}
+
+.table6_1 th {
+	background-color: #93DAFF;
+	color: #000000
+}
+
+.table6_1, .table6_1 th, .table6_1 td {
+	font-size: 0.95em;
+	text-align: center;
+	padding: 4px;
+	border-collapse: collapse;
+}
+
+.table6_1 th, .table6_1 td {
+	border: 1px solid #6fcdfe;
+	border-width: 1px 0 1px 0
+}
+
+.table6_1 tr {
+	border: 1px solid #ffffff;
+}
+
+.table6_1 tr:nth-child(odd) {
+	background-color: #dbf2fe;
+}
+
+.table6_1 tr:nth-child(even) {
+	background-color: #ffffff;
+}
 </style>
 
 <script>
@@ -67,7 +102,7 @@
 </head>
 <body>
 	<%@ include file="index.jsp"%>
-	<table border="1" width=700>
+	<table border="1" width=700 class="table6_1">
 		<tr class="heads">
 			<td width=30>No.<%=b.getBoardnum()%></td>
 			<td width=500><%=b.getTitle()%></td>

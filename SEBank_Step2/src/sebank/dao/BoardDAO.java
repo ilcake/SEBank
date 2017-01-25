@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 import oracle.sql.DATE;
 import sebank.vo.Board;
 import sebank.vo.Reply;
@@ -302,6 +304,27 @@ public class BoardDAO {
 		}
 
 		return sList;
+	}
+
+	public ArrayList<Board> hitsList() {
+		ArrayList<Board> hitsList = new ArrayList<>();
+
+		Connection con = ConnectionManager.makeConnection();
+		try {
+			String sql1 = "select boardnum, id, title, content, to_char(inputdate, 'MM/DD') idd, hits from board2 order by hits desc";
+			String sql = "select * from (select rownum r, b.* from (";
+			sql += "select boardnum, id, title, content, to_char(inputdate, 'MM/DD') idd, hits from board2 order by hits desc) b)";
+			PreparedStatement ps = con.prepareStatement(sql1);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				hitsList.add(new Board(rs.getInt("boardnum"), rs.getString("id"), rs.getString("title"),
+						rs.getString("content"), rs.getString("idd"), rs.getInt("hits")));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ConnectionManager.closeConnection(con);
+		return hitsList;
 	}
 
 }

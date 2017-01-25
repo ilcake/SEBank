@@ -3,7 +3,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%
@@ -38,6 +37,49 @@
 	font-size: 20px;
 	color: red;
 }
+
+.table6_1 table {
+	width: 100%;
+	margin: 15px 0;
+	border: 0;
+}
+
+.table6_1 th {
+	background-color: #93DAFF;
+	color: #000000
+}
+
+.table6_1, .table6_1 th, .table6_1 td {
+	font-size: 0.95em;
+	text-align: center;
+	padding: 4px;
+	border-collapse: collapse;
+}
+
+.table6_1 th, .table6_1 td {
+	border: 1px solid #6fcdfe;
+	border-width: 1px 0 1px 0
+}
+
+.table6_1 tr {
+	border: 1px solid #ffffff;
+}
+
+.table6_1 tr:nth-child(odd) {
+	background-color: #dbf2fe;
+}
+
+.table6_1 tr:nth-child(even) {
+	background-color: #ffffff;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:HOVER {
+	text-decoration: underline;
+}
 </style>
 <script>
 	function selected() {
@@ -58,13 +100,13 @@
 	<h1>BOARD</h1>
 
 	<div class="whole">
-		<table border="1">
+		<table border="1" class="table6_1">
 			<tr class="heads">
 				<th>No.</th>
 				<th width=400>Title</th>
 				<th width=100>ID</th>
 				<th>Date</th>
-				<th align="right">Hits</th>
+				<th align="right"><a href="bs?action=byHits">Hits</a></th>
 			</tr>
 			<%
 				if (list.size() == 0) {

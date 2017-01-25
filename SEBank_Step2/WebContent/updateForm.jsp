@@ -52,20 +52,11 @@
 
 
 	function idCheckOpen() {
-		window.open("idCheck.jsp", "idCheckWin", "top=200, left=400, width=400, height=250");
+		window.open("idCheck.jsp", "idCheckWin", "top=200, left=400, width=300, height=200");
 	}
 </script>
 </head>
 <body>
-	<%
-		Customer c = (Customer) request.getAttribute("Customer");
-		String id = c.getCustid();
-		String name = c.getName();
-		String add = c.getAddress();
-		String division = c.getDivision();
-		String email = c.getEmail();
-		String idno = c.getIdno();
-	%>
 	<div class="all">
 		<h1>[회원정보수정]</h1>
 		<div class="ffom">
@@ -75,7 +66,7 @@
 					<tr>
 						<td><label class="lb">고객 ID</label></td>
 						<td><input class="ip" type="text" id="custid" name="custid"
-							value="<%=id%>" readonly></td>
+							value="${ Customer.custid }" readonly></td>
 					</tr>
 					<tr>
 						<td><label class="lb">비밀번호</label></td>
@@ -90,43 +81,31 @@
 					<tr>
 						<td><label class="lb">이름</label></td>
 						<td><input class="ip" type="text" id="name" name="name"
-							placeholder="이름입력" value="<%=name%>"></td>
+							placeholder="이름입력" value="${ Customer.name }"></td>
 					</tr>
 					<tr>
 						<td><label class="lb">E-mail</label></td>
 						<td><input class="ip" type="text" id="email" name="email"
-							placeholder="이메일입력" value="<%=email%>"></td>
+							placeholder="이메일입력" value="${ Customer.email }"></td>
 					</tr>
 					<tr>
 						<td><label class="lb">회원구분</label></td>
-						<%
-							if (division.equals("personal")) {
-						%>
 						<td><input class="ip" type="radio" name="division"
-							value="personal" checked disabled="disabled"><label>개인</label><input
-							class="ip" type="radio" name="division" value="company"
-							disabled="disabled"><label>기업</label></td>
-						<%
-							} else {
-						%>
-						<td><input class="ip" type="radio" name="division"
-							value="personal" disabled="disabled"><label>개인</label><input
-							class="ip" type="radio" name="division" value="company" checked
-							disabled="disabled"><label>기업</label></td>
-						<%
-							}
-						%>
-
+							value="personal"
+							<c:if test="${ Customer.division=='personal' }">checked</c:if>
+							disabled="disabled"><label>개인</label><input class="ip"
+							type="radio" name="division" value="company" disabled="disabled"
+							<c:if test="${ Customer.division=='company' }">checked</c:if>><label>기업</label></td>
 					</tr>
 					<tr>
 						<td><label class="lb">식별번호</label></td>
 						<td><input class="ip" type="text" id="idno" name="idno"
-							value="<%=idno%>" readonly="readonly"></td>
+							value="${ Customer.idno }" readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td><label class="lb">주소</label></td>
 						<td><input class="ip" type="text" id="address" name="address"
-							value="<%=add%>"></td>
+							value="${ Customer.address }"></td>
 					</tr>
 					<tr>
 						<th colspan="2"><input type="submit" value="변경"><input

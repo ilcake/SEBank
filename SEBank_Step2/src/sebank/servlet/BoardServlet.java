@@ -199,7 +199,16 @@ public class BoardServlet extends HttpServlet {
 			session.setAttribute("boardList", sList);
 			request.getRequestDispatcher("boardList.jsp").forward(request, response);
 			break;
+
+		case "byHits":
+			ArrayList<Board> hitsList = new BoardDAO().hitsList();
+			session = request.getSession();
+			session.setAttribute("boardList", hitsList);
+			request.getRequestDispatcher("boardList.jsp").forward(request, response);
+
+			break;
 		}
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
