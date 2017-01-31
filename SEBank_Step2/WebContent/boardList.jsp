@@ -3,27 +3,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<%
-	String maxPage = (String) session.getAttribute("maxPage");
-	int mPage = 0;
-	if (maxPage != null) {
-		mPage = Integer.parseInt(maxPage);
-	}
-	int pagen = 1;
-	String pageNum = (String) request.getParameter("pagen");
-	if (pageNum != null) {
-		pagen = Integer.parseInt(pageNum);
-	}
-	String counts = (String) session.getAttribute("count");
-	int count = 10;
-	if (counts != null) {
-		count = Integer.parseInt(counts);
-	}
+<c:set var="maxPage" value="${ empty maxPage ? '1' : maxPage }" />
+<c:set var="pageNum" value="${ empty param.pagen ? '1' : param.pagen }" />
+<c:set var="counts" value="${ empty count ? '10' : count }" />
+<fmt:parseNumber var="mp" value="${ maxPage }" />
+<fmt:parseNumber var="pg" value="${ pageNum }" />
+<fmt:parseNumber var="ct" value="${ counts }" />
 
-	ArrayList<Board> list = (ArrayList<Board>) session.getAttribute("boardList");
-%>
+
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -36,6 +27,10 @@
 .pgNow {
 	font-size: 20px;
 	color: red;
+}
+
+.table6_1 {
+	width: 100%;
 }
 
 .table6_1 table {
@@ -80,6 +75,17 @@ a {
 a:HOVER {
 	text-decoration: underline;
 }
+
+.whole {
+	width: 50%;
+	height: 60%;
+	margin: 40px auto;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
 </style>
 <script>
 	function selected() {
@@ -103,39 +109,31 @@ a:HOVER {
 		<table border="1" class="table6_1">
 			<tr class="heads">
 				<th>No.</th>
-				<th width=400>Title</th>
+				<th width=60%>Title</th>
 				<th width=100>ID</th>
 				<th>Date</th>
 				<th align="right"><a href="bs?action=byHits">Hits</a></th>
 			</tr>
-			<%
-				if (list.size() == 0) {
-			%>
-			<tr>
-				<td colspan=5>등록된 글이 없습니다.</td>
-			</tr>
-			<%
-				} else {
-					for (int i = 0; i < list.size(); i++) {
-						Board b = list.get(i);
-						int num = b.getBoardnum();
-						String id = b.getId();
-						String title = b.getTitle();
-						String content = b.getTitle();
-						String date = b.getInputdate();
-						int hits = b.getHits();
-			%>
-			<tr>
-				<td><%=num%></td>
-				<td><a href="bs?action=read&num=<%=num%>"><%=title%></a></td>
-				<td><%=id%></td>
-				<td><%=date%></td>
-				<td align="right"><%=hits%></td>
-			</tr>
-			<%
-				}
-				}
-			%>
+			<c:choose>
+				<c:when test="${ empty boardList }">
+					<tr>
+						<td colspan=5>글이 없습니다.</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach var="board" items="${ boardList }">
+						<tr>
+							<td>${ board.boardnum }</td>
+							<td><a href="bs?action=read&num=${ board.boardnum }"><c:out
+										value="${ board.title }"></c:out></a></td>
+							<td>${ board.id }</td>
+							<td>${ board.inputdate }</td>
+							<td align="right">${ board.hits }</td>
+						</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+
 		</table>
 		<form action="bs" method="post">
 			<input type="hidden" name="action" value="search"><select
@@ -147,44 +145,33 @@ a:HOVER {
 			</select><input type="text" name="que"><input type="submit" value="검색">
 		</form>
 		<div class="navi">
-			<%
-				if (pagen == 1 && mPage == 1) {
 
-				} else if (pagen == 1) {
-			%>
-			<a href="bs?action=boardList&pagen=<%=(pagen + 1)%>">다음페이지</a>
-			<%
-				} else if (pagen == mPage) {
-			%>
-			<a href="bs?action=boardList&pagen=<%=(pagen - 1)%>">이전페이지</a>
-			<%
-				} else {
-			%>
-			<a href="bs?action=boardList&pagen=<%=(pagen - 1)%>">이전페이지</a> <a
-				href="bs?action=boardList&pagen=<%=(pagen + 1)%>">다음페이지</a>
-			<%
-				}
-			%>
+			<c:choose>
+				<c:when test="${ pg==1 && mp!=1}">
+					<a href="bs?action=boardList&pagen=${ pg+1 }">다음페이지</a>
+				</c:when>
+				<c:when test="${ pg!=1 && mp!=pg }">
+					<a href="bs?action=boardList&pagen=${ pg-1 }">이전페이지</a>
+					<a href="bs?action=boardList&pagen=${ pg+1 }">다음페이지</a>
+				</c:when>
+				<c:otherwise>
+					<a href="bs?action=boardList&pagen=${ pg-1 }">이전페이지</a>
+				</c:otherwise>
+			</c:choose>
 			<div class="navi2">
-
 				<a href="bs?action=boardList&pagen=1">첫페이지/</a>
-				<%
-					int max = pagen + 2 > mPage ? mPage : pagen + 2;
-					for (int i = pagen - 2 <= 0 ? 1 : pagen - 2; i <= max; i++) {
-						if (i == pagen) {
-				%>
-				<span class="pgNow" id="pgNow"><%=i%></span>
-				<%
-					} else {
-				%>
-				<a href="bs?action=boardList&pagen=<%=i%>"><%=i%> </a>
-				<%
-					}
-					}
-				%>
-				<a href="bs?action=boardList&pagen=<%=mPage%>">/마지막페이지</a>
+				<c:set var="max" value="${ (pg+2> mp) ? mp : (pg +2) }" />
+				<c:set var="min" value="${ (pg - 2 <= 0) ? 1 : (pg - 2) }" />
+				<c:forEach var="i" begin="${ min }" end="${ max }" step="1">
+					<c:if test="${ i eq pg }">
+						<span class="pgNow" id="pgNow">${ pg }</span>
+					</c:if>
+					<c:if test="${ i ne pg }">
+						<a href="bs?action=boardList&pagen=${ i }">${ i } </a>
+					</c:if>
+				</c:forEach>
+				<a href="bs?action=boardList&pagen=${ mp }">/마지막페이지</a>
 			</div>
-
 			<div>
 				<select name="count" id="count" onchange="selected();">
 					<option value="0">----</option>

@@ -4,24 +4,69 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <style type="text/css">
-.inc {
-	padding: 10px;
+#panel, #flip {
+	padding: 5px;
+	background-color: #93DAFF;
+	border: solid 1px #c3c3c3;
+}
+
+#panel {
+	padding: 20px;
+	display: none;
 	background-color: #93DAFF;
 	color: #000000;
 }
 </style>
-<script type="text/javascript">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
 	function outform() {
 		window.open('outForm.jsp', '회원탈퇴', 'width=500,height=300');
 	}
+
+	$.fn.extend({
+		animateCss : function(animationName) {
+			var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+			this.addClass('animated ' + animationName).one(animationEnd, function() {
+				$(this).removeClass('animated ' + animationName);
+			});
+		}
+	});
+
+	/* $('#panel').addClass('animated bounceInUp'); */
+	var isOpen = false;
+	$(document).ready(function() {
+		$("#flip").click(function() {
+			$('#panel').animateCss('bounceInUp');
+			if (!isOpen) {
+				$("#panel").slideDown("slow");
+				isOpen = true;
+			} else {
+				$("#panel").slideUp("slow");
+				isOpen = false;
+			}
+		});$("#panel").click(function() {
+			if (!isOpen) {
+				$("#panel").slideDown("slow");
+				isOpen = true;
+			} else {
+				$("#panel").slideUp("slow");
+				isOpen = false;
+			}
+		});
+	});
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SEBank_Step2</title>
 </head>
 <body>
-	<div class="inc">
-		<h2>SEBank_Step2</h2>
+	<div id="flip">SEBank_Step2</div>
+	<div class="inc" id="panel">
 
 		<c:choose>
 			<c:when test="${ empty loginId }">
@@ -36,7 +81,7 @@
 				<a href="" onclick="outform();">회원탈퇴</a>
 			</c:otherwise>
 		</c:choose>
-		/ <a href="cal.jsp">달력보기</a>
+		/ <a href="cal.jsp">달력보기</a> / <a href="googleMap.html">지도 보기</a>
 
 	</div>
 </body>

@@ -12,7 +12,7 @@
 	Board b = (Board) session.getAttribute("read");
 	ArrayList<Reply> rList = (ArrayList<Reply>) session.getAttribute("reply");
 %>
-<title>${ b.title }</title>
+<title>${ read.title }</title>
 <style type="text/css">
 .content {
 	padding: 10px;
@@ -64,6 +64,10 @@
 .table6_1 tr:nth-child(even) {
 	background-color: #ffffff;
 }
+
+.inin {
+	width: 90%;
+}
 </style>
 
 <script>
@@ -85,7 +89,7 @@
 	}
 	function replyUpdate(replyNum) {
 		var replyForm = document.getElementById(replyNum);
-		replyForm.innerHTML = "<form action='bs' method='post' onsubmit=''><input type='hidden' name='action' value='replyUpdate'><input type='hidden' name='rnum' value='" + replyNum + "'><input type='text' name='text'><input type='submit' value='확인'></form>";
+		replyForm.innerHTML = "<form action='bs' method='post' onsubmit=''><input type='hidden' name='action' value='replyUpdate'><input type='hidden' name='rnum' value='" + replyNum + "'><input class='inin' type='text' name='text'><input type='submit' value='확인'></form>";
 	}
 
 	function boardDelete(num) {
@@ -104,13 +108,14 @@
 	<%@ include file="index.jsp"%>
 	<table border="1" width=700 class="table6_1">
 		<tr class="heads">
-			<td width=30>No.<%=b.getBoardnum()%></td>
-			<td width=500><%=b.getTitle()%></td>
-			<td>작성자 : <%=b.getId()%></td>
+			<td width=30>No.${ read.boardnum }</td>
+			<td width=500><c:out value="${ read.title }"></c:out></td>
+			<td>작성자 : ${ read.id }</td>
 		</tr>
 		<tr>
 			<td class="content" colspan=3><textarea class="textarea"
-					readonly="readonly" id="tex" onfocus="resize(this);"><%=b.getContent()%></textarea></td>
+					readonly="readonly" id="tex" onfocus="resize(this);"><c:out
+						value="${ read.content }"></c:out></textarea></td>
 		</tr>
 		<%
 			if (b.getId().equals(session.getAttribute("loginId"))) {
@@ -119,15 +124,32 @@
 		<tr>
 			<td colspan="3">
 				<button
-					onclick="location.href='bs?action=updateForm&num=<%=b.getBoardnum()%>'">수정</button>
-				<button onclick="boardDelete(<%=b.getBoardnum()%>);">삭제</button>
+					onclick="location.href='bs?action=updateForm&num=${ read.boardnum }'">수정</button>
+				<button onclick="boardDelete(${ read.boardnum });">삭제</button>
 			</td>
 		</tr>
 		<%
 			}
 		%>
+		<!-- /////////////////////////////////////////////////// -->
+		<c:forEach var="r" items="${ reply }">
 
-		<%
+			<tr>
+				<td>No.${ r.replynum }</td>
+				<td>작성자 : ${ r.id }</td>
+				<td>날짜 : ${ r.inputdate }</td>
+			</tr>
+			<tr>
+				<td colspan="2" id="${ r.replynum }"><c:out value="${ r.text }" />
+				</td>
+				<td><c:if test="${ r.id eq loginId }">
+						<button onclick="replyUpdate('${ r.replynum }');">수정</button>
+						<button onclick="replyDelete('${ r.replynum }');">삭제</button>
+					</c:if></td>
+			</tr>
+		</c:forEach>
+		<!-- ////////////////////////////////////////////// -->
+		<%-- <%
 			if (rList.size() != 0) {
 				int i = 0;
 				for (Reply r : rList) {
@@ -136,7 +158,8 @@
 					String id = r.getId();
 					String text = r.getText();
 					String date = r.getInputdate();
-		%><tr>
+		%>
+		<tr>
 			<td>No.<%=i%></td>
 			<td>작성자 : <%=id%></td>
 			<td>날짜 : <%=date%></td>
@@ -156,7 +179,7 @@
 		<%
 			}
 			}
-		%>
+		%> --%>
 
 	</table>
 	<script>
@@ -166,9 +189,9 @@
 		<form id="reForm" action="bs" method="post"
 			onSubmit="return checkReply();">
 			<input type="hidden" name="action" value="replyInsert"> <input
-				type="hidden" name="boardnum" value="<%=b.getBoardnum()%>">
-			<input type="text" id="text" name="text" style="width: 500px">
-			<input type="submit" value="리플달기">
+				type="hidden" name="boardnum" value="${ read.boardnum }"> <input
+				type="text" id="text" name="text" style="width: 500px"> <input
+				type="submit" value="리플달기">
 		</form>
 	</div>
 	<table>

@@ -7,24 +7,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ID CHECK</title>
-<script>
-	function isSelected(id) {
-		opener.document.getElementById("custid").value = id;
-		this.close();
-	}
-
-	function formCheck() {
-		var id = document.getElementById("id");
-		if (id.value == '') {
-			alert('아이디를 입력해 주십시오');
-			return false;
-		}
-		return true;
-	}
-</script>
+<script type="text/javascript" src="join.js"></script>
 </head>
 <body>
-	<form action="cs" method="post" onsubmit="return formCheck()">
+	<form action="cs" method="post" onsubmit="return formCheckd()">
 		<table>
 			<tr>
 				<td><input type="text" id="id" name="id"
